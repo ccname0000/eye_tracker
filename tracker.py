@@ -70,9 +70,12 @@ def run_tracker(
         # MediaPipe Image
         # ====================================================
 
+        # OpenCV 的畫面為 BGR，MediaPipe SRGB 需要 RGB 通道順序。
+        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
         mp_image = mp.Image(
             image_format=mp.ImageFormat.SRGB,
-            data=frame
+            data=rgb_frame
         )
 
 
