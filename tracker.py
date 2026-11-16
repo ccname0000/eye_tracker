@@ -130,11 +130,11 @@ def run_tracker(
             )
 
 
-            gaze_x = int(
+            gaze_x = float(
                 mapped[0][0][0]
             )
 
-            gaze_y = int(
+            gaze_y = float(
                 mapped[0][0][1]
             )
 
@@ -209,6 +209,7 @@ def run_tracker(
 
 
 
+            # 僅在顯示前轉成整數，保留映射與濾波過程的小數精度。
             smooth_x = max(
                 0,
                 min(
@@ -234,6 +235,26 @@ def run_tracker(
                 smooth_x,
                 smooth_y
             )
+
+
+        # ====================================================
+        # Frame Performance
+        # ====================================================
+
+
+
+
+        # 需要測 performance 時再打開。
+
+        # metrics["Frame Elapsed"] = frame_elapsed
+
+
+        # ====================================================
+        # Evaluation Record
+        #
+        # 所有 evaluation.record()
+        # 集中在這裡。
+        # ====================================================
 
 
 

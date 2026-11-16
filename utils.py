@@ -7,7 +7,7 @@ import numpy as np
 # ============================================================
 
 def get_eye_center(landmarks, w, h, eye=None):
-    """計算眼睛中心座標。
+    """計算眼睛中心座標，保留浮點數以避免丟失細微位移。
     eye=None -> 回傳雙眼平均中心
     eye="left" -> 回傳左眼中心
     eye="right" -> 回傳右眼中心
@@ -22,19 +22,19 @@ def get_eye_center(landmarks, w, h, eye=None):
         # 473 = 右眼
         left_eye = landmarks[468]
         right_eye = landmarks[473]
-        lx = int(left_eye.x * w)
-        ly = int(left_eye.y * h)
-        rx = int(right_eye.x * w)
-        ry = int(right_eye.y * h)
-        return ((lx + rx) // 2, (ly + ry) // 2)
+        lx = left_eye.x * w
+        ly = left_eye.y * h
+        rx = right_eye.x * w
+        ry = right_eye.y * h
+        return ((lx + rx) / 2, (ly + ry) / 2)
 
     # ========================================================
     # 左眼
     # ========================================================
     elif eye == "left":
         idx = [362, 263]
-        x = int(((landmarks[idx[0]].x + landmarks[idx[1]].x) / 2) * w)
-        y = int(((landmarks[idx[0]].y + landmarks[idx[1]].y) / 2) * h)
+        x = ((landmarks[idx[0]].x + landmarks[idx[1]].x) / 2) * w
+        y = ((landmarks[idx[0]].y + landmarks[idx[1]].y) / 2) * h
         return x, y
 
     # ========================================================
@@ -42,8 +42,8 @@ def get_eye_center(landmarks, w, h, eye=None):
     # ========================================================
     elif eye == "right":
         idx = [33, 133]
-        x = int(((landmarks[idx[0]].x + landmarks[idx[1]].x) / 2) * w)
-        y = int(((landmarks[idx[0]].y + landmarks[idx[1]].y) / 2) * h)
+        x = ((landmarks[idx[0]].x + landmarks[idx[1]].x) / 2) * w
+        y = ((landmarks[idx[0]].y + landmarks[idx[1]].y) / 2) * h
         return x, y
 
 # ============================================================
@@ -71,14 +71,14 @@ def smooth(
     # Exponential Moving Average
     # --------------------------------------------------------
 
-    smooth_x = int(
+    smooth_x = (
         alpha * gaze_x
         +
         (1 - alpha) * prev_x
     )
 
 
-    smooth_y = int(
+    smooth_y = (
         alpha * gaze_y
         +
         (1 - alpha) * prev_y
@@ -340,8 +340,8 @@ class AdaptiveKalmanFilter2D:
         # ====================================================
 
         return (
-            int(px),
-            int(py)
+            float(px),
+            float(py)
         )
 def get_normalized_eye_feature(face, w, h):
 
